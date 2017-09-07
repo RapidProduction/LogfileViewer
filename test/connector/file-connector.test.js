@@ -7,7 +7,8 @@ const {
 const {
   createFileRandomly,
   removeAllFileInDirectory,
-} = require('../helpers/file-manipulator');
+} = require('../../src/libraries/file-manipulator');
+const { fromContentToArray } = require('../../src/libraries/content-formatter');
 
 describe('Logfile Connector', () => {
   describe('Find', () => {
@@ -24,6 +25,31 @@ describe('Logfile Connector', () => {
     after((done) => {
       removeAllFileInDirectory()
         .then(() => { done(); });
+    });
+
+    describe('When specific file path is incorrect', () => {
+      it('should return error reason', () => {
+        find('/incorrect-path-name')
+          .catch((error) => {
+            expect(error).to.equal('filename should start with correct initial path');
+          });
+      });
+    });
+
+    describe('When specific file path is empty, null, or undefined', () => {
+      it('should return error reason', () => {
+        find(undefined)
+          .catch((error) => {
+            expect(error).to.equal('filename should not be undefined or null');
+          });
+      });
+
+      it('should return error reason', () => {
+        find(null)
+          .catch((error) => {
+            expect(error).to.equal('filename should not be undefined or null');
+          });
+      });
     });
 
     describe('When specific file does not exist', () => {
@@ -72,7 +98,7 @@ describe('Logfile Connector', () => {
 
     describe('When file exist', () => {
       it('should return file content as string', () => {
-        read(fixtureFilename, 0, fixtureContent.split('\n').length-1)
+        read(fixtureFilename, 0, fromContentToArray(fixtureContent).length-1)
           .then((content) => {
             expect(content).to.not.equal('');
             expect(content).to.not.equal(null);
@@ -81,7 +107,7 @@ describe('Logfile Connector', () => {
       });
 
       it('should return file content with correct number of line', () => {
-        read(fixtureFilename, 0, fixtureContent.split('\n').length-1)
+        read(fixtureFilename, 0, fromContentToArray(fixtureContent).length-1)
           .then((content) => {
             expect(content.split('\n').length)
               .to.equal(fixtureContent.split('\n').length);
@@ -89,7 +115,7 @@ describe('Logfile Connector', () => {
       });
 
       it('should return file content with correct start line', () => {
-        read(fixtureFilename, 0, fixtureContent.split('\n').length-1)
+        read(fixtureFilename, 0, fromContentToArray(fixtureContent).length-1)
           .then((content) => {
             expect(content.split('\n')[0])
               .to.not.equal(fixtureContent.split('\n')[0]);
@@ -100,7 +126,7 @@ describe('Logfile Connector', () => {
     describe('When request is invalid', () => {
       describe('by number of line exceed the actual content', () => {
         it('should return file content with maximum number of line', () => {
-          read(fixtureFilename, 0, fixtureContent.split('\n').length*2)
+          read(fixtureFilename, 0, fromContentToArray(fixtureContent).length*2)
             .then((content) => {
               expect(content.split('\n').length)
                 .to.equal(fixtureContent.split('\n').length);
