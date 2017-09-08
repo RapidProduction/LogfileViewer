@@ -12,7 +12,7 @@ const { fromContentToArray } = require('../../src/libraries/content-formatter');
 describe('File Manipulator', () => {
   let fixtureFilename = fixtureContent = undefined;
   before((done) => {
-    createFileRandomly(Math.random() * 1000)
+    createFileRandomly(Math.random() * 10)
       .then(({ filename, content }) => {
         fixtureFilename = filename;
         fixtureContent = content;
@@ -91,12 +91,28 @@ describe('File Manipulator', () => {
     describe('When start index is in between line count', () => {
       it('should return proper start line content', () => {
         const contentLength = fromContentToArray(fixtureContent).length;
-        readline(fixtureFilename, contentLength/2, 20)
+        const index = Math.floor(contentLength/2);
+        const offset = Math.floor(contentLength - contentLength/2);
+        readline(fixtureFilename, index, offset)
           .then((contents) => {
             expect(contents).to.not.equal(null);
-            expect(contents.length).to.equal(20);
+            expect(contents.length).to.equal(offset);
             expect(contents[0]).to.equal(
-              fromContentToArray(fixtureContent)[contentLength/2]);
+              fromContentToArray(fixtureContent)[index]);
+          });
+      });
+    });
+
+    describe('When offset is over line count', () => {
+      it('should return at most line counts', () => {
+        const contentLength = fromContentToArray(fixtureContent).length;
+        const index = Math.floor(contentLength/2);
+        const offset = contentLength - Math.floor(contentLength/2);
+        const fakeOffset = offset + 100;
+        readline(fixtureFilename, index, fakeOffset)
+          .then((contents) => {
+            expect(contents).to.not.equal(null);
+            expect(contents.length).to.equal(offset);
           });
       });
     });
