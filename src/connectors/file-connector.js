@@ -1,5 +1,8 @@
 const fs = require('fs');
-const { readline } = require('../libraries/file-manipulator');
+const {
+  countLine,
+  readline,
+} = require('../libraries/file-manipulator');
 
 const initialPath = '/Users/max/Desktop/temp';
 const guardFilename = (filename) => {
@@ -17,7 +20,11 @@ const find = (filename) => {
       guardFilename(filename);
       fs.stat(filename, (error, stats) => {
         if(error) throw error;
-        resolve(stats);
+        countLine(filename)
+          .then((line) => {
+            resolve(Object.assign({}, stats, { line }))
+          })
+          .catch(reject);
       });
     }
     catch(error) {
