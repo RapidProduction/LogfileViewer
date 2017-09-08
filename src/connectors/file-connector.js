@@ -1,6 +1,7 @@
 const fs = require('fs');
-const initialPath = '/Users/max/Desktop/temp';
+const { readline } = require('../libraries/file-manipulator');
 
+const initialPath = '/Users/max/Desktop/temp';
 const guardFilename = (filename) => {
   if(filename === undefined || filename === null) {
     throw 'filename should not be undefined or null';
@@ -25,14 +26,13 @@ const find = (filename) => {
   });
 };
 
-const read = (filename, startLine, numberOfLine) => {
+const read = (filename, index, numberOfLine) => {
   return new Promise((resolve, reject) => {
     try {
       guardFilename(filename);
-      fs.readFile(filename, (error, data) => {
-        if (error) throw error;
-        resolve(data);
-      });
+      readline(filename, index, numberOfLine)
+        .then(resolve)
+        .catch(reject);
     }
     catch(error) {
       reject(error);
