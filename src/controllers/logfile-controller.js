@@ -1,7 +1,13 @@
 const BaseController = require('./base-controller');
-const { isNil } = require('lodash');
+const {
+  isArray,
+  isEmpty,
+  isNil,
+  map,
+} = require('lodash');
 const FileSerializer = require('../libraries/serializers/file-serializer');
 const FileModel = require('../models/file-model');
+const JSONAPISerializer = require('jsonapi-serializer').Serializer;
 
 class LogFileController extends BaseController {
   constructor() {
@@ -21,18 +27,25 @@ class LogFileController extends BaseController {
       const { index, offset } = super.whitelistParams(params, LogFileController.whitelistParams);
       FileModel.find(id)
         .then((fileModel) => {
-          return fileModel.attributes;
+          if(isEmpty(params)) return fileModel.attributes;
+          if(isNil(index) || isNil(offset)) reject('Index and offset cannot be null');
+          return Promise.all([
+              fileModel.attributes,
+              fileModel.read(parseInt(index), parseInt(offset))
+            ]);
         })
-        .then((attributes) => {
-          if(isNil(index) || isNil(offset)) {
-            reject('Index and offset cannot be null');
+        .then(dataset => {
+          if(isArray(dataset)){
+            const [ file , contents ] = dataset;
+            const result = Object.assign({}, file, { content:
+              map(contents, (value, contentIndex) => ({
+                id: contentIndex + parseInt(index),
+                content: value,
+              })),
+            });
+            resolve(FileSerializer.serialize(result));
           }
-          else if(){
-            return (FileSerializer.serialize(attributes));
-          }
-        })
-        .then((fileModel) => {
-          
+          resolve(FileSerializer.serialize(dataset));
         })
         .catch(reject);
     });

@@ -6,14 +6,13 @@ const PORT = 9001;
 
 app.get('/', (request, response) => {
   // TODO: Searching file through controller
-  response.send('Hello World');
+  response.send('Welcome to logfile API');
 });
 
 app.get('/api/logfile/:id', (request, response) => {
   LogfileController.get(request.params.id, request.query)
-    .then((contents) => {
-      console.log(contents);
-      response.send(contents);
+    .then((file) => {
+      response.send(file);
     })
     .catch(response.send);
 });
