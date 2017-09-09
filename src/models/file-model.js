@@ -23,8 +23,14 @@ class FileModel {
     });
   }
 
-  get fileInfo() {
-    return fileConnector.find(this.filename);
+  get attributes() {
+    return new Promise((resolve, reject) => {
+      fileConnector.find(this.filename)
+        .then((information) => {
+          resolve(Object.assign({}, information , { id: this.filename}));
+        })
+        .catch(reject)
+    });
   }
 
   read(index, offset) {

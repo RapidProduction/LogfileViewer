@@ -11,8 +11,10 @@
     "chai-http": "^3.0.0",
     "express": "^4.15.4",
     "faker": "^4.1.0",
+    "jsonapi-serializer": "^3.5.5",
     "lodash": "^4.17.4",
     "mocha": "^3.5.0",
+    "node-mocks-http": "^1.6.4",
     "sinon": "^3.2.1"
   }
 }

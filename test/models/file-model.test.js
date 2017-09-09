@@ -17,7 +17,6 @@ describe('File Model', () => {
         fixtureFilename = filename;
         fixtureContent = content;
         relativeFixtureFilename = filename.replace(initialPath, '');
-        console.log(relativeFixtureFilename);
       })
       .then(() => { done(); });
   });
