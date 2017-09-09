@@ -6,8 +6,9 @@ const {
 class BaseController {
   constructor() {}
 
-  whitelistParams(params, keys) {
-    return pickBy(params, (v, k) => { return includes(keys, k); });
+  static whitelistParams(params, keys) {
+    // return pickBy(params, (k, v) => { return includes(keys, k); });
+    return params;
   }
 }
 

@@ -28,6 +28,7 @@ const find = (filename) => {
       });
     }
     catch(error) {
+      console.log("crashs at " + error);
       reject(error);
     }
   });
