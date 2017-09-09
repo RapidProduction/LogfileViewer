@@ -1,6 +1,8 @@
+// import { ajax } from 'rxjs/operators';
+
 // Actions
-export const LOGFILE_UPDATE = "logfile/logfile/update";
-export const LOGFILE_FETCH = "logfile/logfile/fetch";
+export const LOGFILE_UPDATE = 'logfile/logfile/update';
+export const LOGFILE_FETCH = 'logfile/logfile/fetch';
 
 // Reducer
 const defaultState = {
@@ -10,7 +12,8 @@ const defaultState = {
 export const logfileReducer = (state={}, action) => {
   switch(action.type) {
     case LOGFILE_UPDATE:
-      return Object.assign({}, state, action.data);
+      console.log(Object.assign({}, state, { contents: action.data }));
+      return Object.assign({}, state, { contents: action.data });
     default:
       return state;
   }
@@ -30,19 +33,19 @@ export const fetchLogfile = (filename, index, offset) => ({
 const contents = [
   {
     id: 2,
-    value: "ABC",
+    value: 'ABC',
   },
   {
     id: 3,
-    value: "ABC",
+    value: 'DEF',
   },
   {
     id: 4,
-    value: "ABC",
+    value: 'GHJ',
   },
   {
     id: 4,
-    value: "ABC",
+    value: 'JKL',
   },
 ];
 

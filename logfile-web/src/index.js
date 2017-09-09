@@ -10,7 +10,10 @@ import { createEpicMiddleware } from 'redux-observable';
 
 import App from './App';
 import './index.css';
-import { rootEpic, rootReducer } from './modules';
+import {
+  rootEpic,
+  rootReducer,
+} from './modules';
 import registerServiceWorker from './registerServiceWorker';
 
 const epicMiddleware = createEpicMiddleware(rootEpic);

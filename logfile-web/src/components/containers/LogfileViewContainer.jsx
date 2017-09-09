@@ -23,25 +23,25 @@ const mapDispatchToProps = (dispatch) => ({
   onSearchClick: () => {
     // Try using local state to manage index
     console.log("onSearchClick");
-    fetchLogfile(filename, 0, 10);
+    dispatch(fetchLogfile(filename, 0, 10));
   },
   onBackToBeginning: () => {
     // Try using local state to manage index
     console.log("onBackToBeginning");
-    fetchLogfile(filename, 0, 10);
+    dispatch(fetchLogfile(filename, 0, 10));
   },
   onBack: () => {
     // Try using local state to manage index
     console.log("onBack");
-    fetchLogfile(filename, 0, 10);
+    dispatch(fetchLogfile(filename, 0, 10));
   },
   onNext: () => {
     console.log("onNext");
-    fetchLogfile(filename, 9, 10);
+    dispatch(fetchLogfile(filename, 9, 10));
   },
   onNextToEnd: () => {
     console.log("onNextToEnd");
-    fetchLogfile(filename, 19, 10);
+    dispatch(fetchLogfile(filename, 19, 10));
   }
 });
 
