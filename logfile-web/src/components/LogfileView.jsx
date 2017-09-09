@@ -3,36 +3,18 @@ import React from "react";
 import Searchbar from "./Searchbar.jsx";
 import ContentView from "./ContentView.jsx";
 
-const contents = [
-  {
-    id: 2,
-    value: "ABC",
-  },
-  {
-    id: 3,
-    value: "ABC",
-  },
-  {
-    id: 4,
-    value: "ABC",
-  },
-  {
-    id: 4,
-    value: "ABC",
-  },
-];
 const LogfileView = ({
   // props
   logfileContents,
   // events
-  onSearchbarChange, onSerchClick,
+  onSearchbarChange, onSearchClick,
   onBackToBeginning, onBack,
   onNext, onNextToEnd,
 }) => (
   <div className="container">
     <Searchbar />
-    <button>View</button>
-    <ContentView contents={contents}/>
+    <button onClick={onSearchClick}>View</button>
+    <ContentView contents={logfileContents}/>
     <div className="control_container">
       <button onClick={onBackToBeginning}>{"|<"}</button>
       <button onClick={onBack}>{"<"}</button>

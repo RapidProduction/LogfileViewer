@@ -1,7 +1,6 @@
 import React from "react";
+import LogfileViewContainer from "../containers/LogfileViewContainer.jsx";
 
-import LogfileView from "../LogfileView.jsx";
-
-const LogfileRoute = () => <LogfileView />;
+const LogfileRoute = () => <LogfileViewContainer />;
 
 export default LogfileRoute;
