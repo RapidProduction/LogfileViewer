@@ -1,7 +1,11 @@
+import {
+  array,
+  func,
+} from 'prop-types';
 import React from "react";
 
-import Searchbar from "./Searchbar.jsx";
-import ContentView from "./ContentView.jsx";
+import ContentView from "../ContentView";
+import Searchbar from "../Searchbar";
 
 const LogfileView = ({
   // props
@@ -23,5 +27,14 @@ const LogfileView = ({
     </div>
   </div>
 );
+
+LogfileView.propTypes = {
+  logfileContents: array,
+  onSearchbarChange: func,
+  onSearchClick: func,
+  onBackToBeginning: func,
+  onBack: func,
+  onNext: func,
+};
 
 export default LogfileView;

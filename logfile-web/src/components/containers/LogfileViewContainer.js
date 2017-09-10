@@ -7,7 +7,7 @@ import {
   withHandlers,
 } from 'recompose';
 
-import LogfileView from '../LogfileView.jsx';
+import LogfileView from '../LogfileView';
 import { fetchLogfile, updateLogfile } from '../../modules/logfile-module';
 
 const FILENAME = "test.small";

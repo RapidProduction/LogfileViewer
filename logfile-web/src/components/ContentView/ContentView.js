@@ -1,5 +1,6 @@
-import { map } from "lodash";
-import React from "react";
+import { map } from 'lodash';
+import { array } from 'prop-types';
+import React from 'react';
 
 const ContentView = ({ contents }) => (
   <div>
@@ -13,5 +14,13 @@ const ContentView = ({ contents }) => (
     }
   </div>
 );
+
+ContentView.propTypes = {
+  contents: array.isRequired,
+};
+
+ContentView.defaultProps = {
+  contents: [],
+};
 
 export default ContentView;
