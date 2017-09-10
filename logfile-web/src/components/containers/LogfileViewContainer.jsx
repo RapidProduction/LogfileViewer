@@ -7,16 +7,12 @@ import {
 } from 'recompose';
 
 import LogfileView from '../LogfileView.jsx';
-import { fetchLogfile } from '../../modules/logfile-module';
+import { fetchLogfile, updateLogfile } from '../../modules/logfile-module';
 
 const filename = "test.small";
 const mapStateToProps = (state) => ({
-  logfileContents: [
-    {
-      id: 1,
-      value: "ABC",
-    },
-  ],
+  // TODO: Use lodash selector
+  logfileContents: state.logfile.contents ? state.logfile.contents.contents : null,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -47,14 +43,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withProps({
-    logfileContents: [
-      {
-        id: 1,
-        value: "ABC",
-      }
-    ],
-  }),
   withHandlers( props => ({
     onSearchbarChange: () => {
       console.log("on search bar change");
