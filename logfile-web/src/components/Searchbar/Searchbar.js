@@ -17,7 +17,11 @@ const Searchbar = ({
         placeholder="Path to file"
       />
     </div>
-    <button onClick={handleSubmit} disabled={pristine || submitting}>
+    <button
+      className="searchbar__button"
+      onClick={handleSubmit}
+      disabled={pristine || submitting}
+    >
       View
     </button>
   </div>
