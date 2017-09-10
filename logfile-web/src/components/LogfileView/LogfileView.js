@@ -2,22 +2,20 @@ import {
   array,
   func,
 } from 'prop-types';
-import React from "react";
+import React from 'react';
 
-import ContentView from "../ContentView";
-import Searchbar from "../Searchbar";
+import ContentView from '../ContentView';
+import Searchbar from '../Searchbar';
 
 const LogfileView = ({
   // props
   logfileContents,
   // events
-  onSearchbarChange, onSearchClick,
-  onBackToBeginning, onBack,
-  onNext, onNextToEnd,
+  onSearchClick, onBackToBeginning,
+  onBack, onNext, onNextToEnd,
 }) => (
   <div className="container">
-    <Searchbar />
-    <button onClick={onSearchClick}>View</button>
+    <Searchbar handleSubmit={onSearchClick} />
     <ContentView contents={logfileContents}/>
     <div className="control_container">
       <button onClick={onBackToBeginning}>{"|<"}</button>
@@ -30,7 +28,6 @@ const LogfileView = ({
 
 LogfileView.propTypes = {
   logfileContents: array,
-  onSearchbarChange: func,
   onSearchClick: func,
   onBackToBeginning: func,
   onBack: func,

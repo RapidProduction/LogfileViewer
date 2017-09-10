@@ -1,4 +1,7 @@
-import { get } from 'lodash';
+import {
+  get,
+  isNil,
+} from 'lodash';
 import { connect } from 'react-redux';
 import {
   compose,
@@ -12,8 +15,10 @@ const FILENAME = "test.small";
 const LINE_PER_PAGE = 10;
 const mapStateToProps = (state) => ({
   logfileContents: state.logfile.contents,
-  logfileLine: state.logfile.line,
   logfileIndex: get(state.logfile, 'contents.0.id', 0),
+  logfileLine: state.logfile.line,
+  logfileFilename: state.logfile.filename,
+  searchFilename: get(state.form, 'search.values.filename', null),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -24,18 +29,26 @@ const mapDispatchToProps = (dispatch) => ({
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
-    onSearchbarChange: ({ fetchLogfile }) => () => console.log("on search bar change"),
-    onSearchClick: ({ fetchLogfile }) => () => fetchLogfile(FILENAME, 0),
-    // This is redundant due to consistency reason
-    onBackToBeginning: ({ fetchLogfile }) => () => fetchLogfile(FILENAME, 0),
-    onBack: ({ logfileLine, logfileIndex, fetchLogfile }) => () => {
-      if(logfileIndex - LINE_PER_PAGE >= 0)
-        fetchLogfile(FILENAME, logfileIndex - LINE_PER_PAGE);
+    onSearchClick: ({ fetchLogfile, searchFilename }) => () => {
+      if(!isNil(searchFilename)) {
+        fetchLogfile(searchFilename, 0);
+      }
     },
-    onNext: ({ logfileLine, logfileIndex, fetchLogfile }) => () => {
-      if(logfileIndex + LINE_PER_PAGE < logfileLine)
-        fetchLogfile(FILENAME, logfileIndex + LINE_PER_PAGE);
+    onBackToBeginning: ({ logfileFilename, fetchLogfile }) => () => {
+      fetchLogfile(logfileFilename, 0);
     },
-    onNextToEnd: ({ fetchLogfile, logfileLine }) => () => fetchLogfile(FILENAME, logfileLine - 10),
+    onBack: ({ logfileFilename, logfileIndex, logfileLine, fetchLogfile }) => () => {
+      if(logfileIndex - LINE_PER_PAGE >= 0) {
+        fetchLogfile(logfileFilename, logfileIndex - LINE_PER_PAGE);
+      }
+    },
+    onNext: ({ logfileFilename, logfileIndex, logfileLine, fetchLogfile }) => () => {
+      if(logfileIndex + LINE_PER_PAGE < logfileLine) {
+        fetchLogfile(logfileFilename, logfileIndex + LINE_PER_PAGE);
+      }
+    },
+    onNextToEnd: ({ logfileFilename, fetchLogfile, logfileLine }) => () => {
+      fetchLogfile(logfileFilename, logfileLine - 10);
+    },
   }),
 )(LogfileView);

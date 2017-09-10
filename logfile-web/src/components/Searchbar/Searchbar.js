@@ -1,14 +1,28 @@
-import React from "react";
+import React from 'react';
+import { Field, reduxForm } from 'redux-form';
 import './Searchbar.scss';
 
-const Searchbar = () => (
+const Searchbar = ({
+  // props
+  pristine, reset, submitting,
+  // events
+  handleSubmit,
+ }) => (
   <div className="searchbar__container">
-    <input
-      className="searchbar__input"
-      type="text"
-      placeholder="path/to/file"
-    />
+    <div>
+      <Field
+        name="filename"
+        component="input"
+        type="text"
+        placeholder="Path to file"
+      />
+    </div>
+    <button onClick={handleSubmit} disabled={pristine || submitting}>
+      View
+    </button>
   </div>
 );
 
-export default Searchbar;
+export default reduxForm({
+  form: 'search',
+})(Searchbar);
