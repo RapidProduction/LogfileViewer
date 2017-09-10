@@ -2,13 +2,11 @@ import { get } from 'lodash';
 import { connect } from 'react-redux';
 import {
   compose,
-  withProps,
-  withState,
   withHandlers,
 } from 'recompose';
 
 import LogfileView from '../LogfileView';
-import { fetchLogfile, updateLogfile } from '../../modules/logfile-module';
+import { fetchLogfile } from '../../modules/logfile-module';
 
 const FILENAME = "test.small";
 const LINE_PER_PAGE = 10;

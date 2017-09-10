@@ -15,10 +15,9 @@ const defaultState = {
   line: 0,
 };
 
-export const logfileReducer = (state={}, action) => {
+export const logfileReducer = (state=defaultState, action) => {
   switch(action.type) {
     case LOGFILE_UPDATE:
-      console.log(state);
       return Object.assign({}, state, { ...action.data });
     default:
       return state;
