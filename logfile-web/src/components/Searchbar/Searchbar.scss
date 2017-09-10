@@ -1,0 +1,11 @@
+.searchbar {
+  &__container {
+    width: 200px;
+    padding: 15px;
+  }
+
+  &__input {
+    font-size: 100;
+    background-color: rgba(250, 222, 214, 0.9);
+  }
+}
