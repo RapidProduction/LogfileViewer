@@ -6,8 +6,8 @@ const ContentView = ({ contents }) => (
     {
       map(contents, (content, index) => (
         <div key={`content.view.${index}`}>
-          <div>{content.id}</div>
-          <div>{content.value}</div>
+          <div>{content.id+1}</div>
+          <div>{content.content}</div>
         </div>
       ))
     }
