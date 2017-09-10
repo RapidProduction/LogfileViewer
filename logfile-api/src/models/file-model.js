@@ -27,7 +27,7 @@ class FileModel {
     return new Promise((resolve, reject) => {
       fileConnector.find(this.filename)
         .then((information) => {
-          resolve(Object.assign({}, information , { id: this.filename}));
+          resolve(Object.assign({}, information , { id: this.relativeFilename}));
         })
         .catch(reject)
     });
