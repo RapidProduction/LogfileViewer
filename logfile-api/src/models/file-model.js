@@ -1,6 +1,7 @@
 const path = require('path');
-const fileConnector = require('../connectors/file-connector');
 
+const { logfilePath } = require('../config/app-config');
+const fileConnector = require('../connectors/file-connector');
 class FileModel {
   constructor(relativeFilename) {
     this.relativeFilename = relativeFilename
@@ -8,7 +9,7 @@ class FileModel {
   }
 
   static get initialPath() {
-    return '/Users/max/Desktop/temp';
+    return logfilePath;
   }
 
   static fullpath(relativeFilename) {

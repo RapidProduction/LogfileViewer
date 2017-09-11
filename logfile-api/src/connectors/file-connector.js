@@ -1,15 +1,16 @@
 const fs = require('fs');
+
+const { logfilePath } = require('../config/app-config');
 const {
   countLine,
   readline,
 } = require('../libraries/file-manipulator');
 
-const initialPath = '/Users/max/Desktop/temp';
 const guardFilename = (filename) => {
   if(filename === undefined || filename === null) {
     throw 'filename should not be undefined or null';
   }
-  else if(!filename.startsWith(initialPath)) {
+  else if(!filename.startsWith(logfilePath)) {
     throw 'filename should start with correct initial path';
   }
 }
@@ -28,7 +29,7 @@ const find = (filename) => {
       });
     }
     catch(error) {
-      console.log("crashs at " + error);
+      console.log("Crashs at " + error);
       reject(error);
     }
   });
