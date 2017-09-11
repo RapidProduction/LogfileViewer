@@ -6,11 +6,19 @@ const { reduce } = require('lodash');
 const { logfilePath, testPath } = require('../config/app-config');
 
 // Warning: it might delete your important files
-const initialPath = testPath;
+let initialPath = logfilePath;
+if(process.env.NODE_ENV === 'test') {
+  initialPath = testPath;
+}
+
+// Every methods should process on top of the initial path
+const toFullpath = (filename) => path.join(initialPath, filename);
+
 const countLine = (filename) => {
   return new Promise((resolve, reject) => {
     let count = 0;
-    fs.createReadStream(filename)
+    const fullpath = toFullpath(filename);
+    fs.createReadStream(fullpath)
       .on('data', (bytes) => {
         for(let i=0; i<bytes.length; ++i) {
           if(bytes[i] == 10) {
@@ -43,19 +51,24 @@ const createDirectory = () => {
 };
 
 const createFileRandomly = (numberOfLine) => {
-  const filename = path.join(initialPath, faker.system.fileName());
+  const filename = faker.system.fileName();
+  const fullpath = toFullpath(filename);
   const content = faker.lorem.lines(numberOfLine);
   return new Promise((resolve, reject) => {
     createDirectory()
       .then(() => {
-        fs.writeFile(filename, content, 'utf-8', (error) => {
+        fs.writeFile(fullpath, content, 'utf-8', (error) => {
           if(error) reject(error);
-          resolve({ filename, content });
+          resolve({
+            filename: fullpath.replace(initialPath, ''),
+            content
+          });
         });
       });
   });
 };
 
+// This is force to remove file from initial path
 const removeAllFileInDirectory = () => {
   return new Promise((resolve) => {
     fs.readdir(initialPath, (error, files) => {
@@ -77,7 +90,8 @@ const readline = (filename, index, offset) => {
     let buffer = '';
     let count = 0;
     let contents = [];
-    fs.createReadStream(filename)
+    const fullpath = toFullpath(filename);
+    fs.createReadStream(fullpath)
       .on('data', (bytes) => {
         for(let i=0; i<bytes.length; ++i) {
           if(count >= index && count < index + offset) {
@@ -107,4 +121,5 @@ module.exports = {
   createFileRandomly,
   removeAllFileInDirectory,
   readline,
+  toFullpath,
 };

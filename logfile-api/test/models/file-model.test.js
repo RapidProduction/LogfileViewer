@@ -5,25 +5,22 @@ const {
   removeAllFileInDirectory,
 } = require('../../src/libraries/file-manipulator');
 const { fromContentToArray } = require('../../src/libraries/content-formatter');
+const { testPath } = require('../../src/config/app-config');
 
-// TODO: Move this to config file
-const initialPath = '/Users/max/Desktop/temp/';
 describe('File Model', () => {
   let fixtureFilename = fixtureContent = undefined;
-  let relativeFixtureFilename = undefined;
   before((done) => {
     createFileRandomly((Math.random() * 1000) + 10)
       .then(({ filename, content }) => {
         fixtureFilename = filename;
         fixtureContent = content;
-        relativeFixtureFilename = filename.replace(initialPath, '');
       })
-      .then(() => { done(); });
+      .then(done);
   });
 
   after((done) => {
     removeAllFileInDirectory()
-      .then(() => { done(); });
+      .then(done);
   });
 
   describe('Find', () => {
@@ -38,7 +35,7 @@ describe('File Model', () => {
 
     describe('When file exist', () => {
       it('should return file model instance', () => {
-        FileModel.find(relativeFixtureFilename)
+        FileModel.find(fixtureFilename)
           .then((fileModel) => {
             expect(fileModel).to.not.equal(null);
           });
@@ -59,7 +56,7 @@ describe('File Model', () => {
 
     describe('When file exist', () => {
       it('should return file model instance', () => {
-        fileModel = new FileModel(relativeFixtureFilename)
+        fileModel = new FileModel(fixtureFilename)
         fileModel.read(0, 10)
           .then((contents) => {
             expect(contents).to.not.equal(null);
@@ -69,11 +66,11 @@ describe('File Model', () => {
     });
   });
 
-  describe('Instance.fileInfo', () => {
+  describe('Instance.attributes', () => {
     describe('When file does not exist', () => {
       it('should return error reason', () => {
         fileModel = new FileModel('/incorrect-path-name')
-        fileModel.fileInfo
+        fileModel.attributes
           .catch((error) => {
             expect(error).to.not.equal(null);
           });
@@ -82,8 +79,8 @@ describe('File Model', () => {
 
     describe('When file exist', () => {
       it('should return file model instance', () => {
-        fileModel = new FileModel(relativeFixtureFilename)
-        fileModel.fileInfo
+        fileModel = new FileModel(fixtureFilename)
+        fileModel.attributes
           .then((information) => {
             expect(information).to.not.equal(null);
           });

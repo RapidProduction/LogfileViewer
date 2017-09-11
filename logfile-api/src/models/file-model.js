@@ -2,24 +2,24 @@ const path = require('path');
 
 const { logfilePath } = require('../config/app-config');
 const fileConnector = require('../connectors/file-connector');
+
 class FileModel {
-  constructor(relativeFilename) {
-    this.relativeFilename = relativeFilename
-    this.filename = FileModel.fullpath(relativeFilename);
+  constructor(filename) {
+    this.filename = filename;
   }
 
   static get initialPath() {
     return logfilePath;
   }
 
-  static fullpath(relativeFilename) {
-    return path.join(this.initialPath, relativeFilename);
+  static fullpath(filename) {
+    return path.join(this.initialPath, filename);
   }
 
-  static find(relativeFilename) {
+  static find(filename) {
     return new Promise((resolve, reject) => {
-      fileConnector.find(FileModel.fullpath(relativeFilename))
-        .then(() => { resolve(new FileModel(relativeFilename)); })
+      fileConnector.find(filename)
+        .then(() => resolve(new FileModel(filename)))
         .catch(reject);
     });
   }
@@ -28,7 +28,7 @@ class FileModel {
     return new Promise((resolve, reject) => {
       fileConnector.find(this.filename)
         .then((information) => {
-          resolve(Object.assign({}, information , { id: this.relativeFilename}));
+          resolve(Object.assign({}, information , { id: this.filename}));
         })
         .catch(reject)
     });

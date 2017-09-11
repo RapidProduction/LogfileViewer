@@ -5,6 +5,8 @@ const {
   isNil,
   map,
 } = require('lodash');
+
+const { toUnprocessableEntityError } = require('../libraries/serializers/error-serializer');
 const FileSerializer = require('../libraries/serializers/file-serializer');
 const FileModel = require('../models/file-model');
 const JSONAPISerializer = require('jsonapi-serializer').Serializer;
@@ -28,7 +30,7 @@ class LogFileController extends BaseController {
       FileModel.find(id)
         .then((fileModel) => {
           if(isEmpty(params)) return fileModel.attributes;
-          if(isNil(index) || isNil(offset)) reject('Index and offset cannot be null');
+          if(isNil(index) || isNil(offset)) throw 'Index and offset cannot be null';
           return Promise.all([
               fileModel.attributes,
               fileModel.read(parseInt(index), parseInt(offset))
@@ -47,7 +49,9 @@ class LogFileController extends BaseController {
           }
           resolve(FileSerializer.serialize(dataset));
         })
-        .catch(reject);
+        .catch((error) => {
+          reject(toUnprocessableEntityError(null, error));
+        });
     });
   }
 }

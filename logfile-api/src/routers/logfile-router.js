@@ -7,7 +7,10 @@ router.get('/:id', (request, response) => {
     .then((file) => {
       response.send(file);
     })
-    .catch(response.send);
+    .catch((error) => {
+      response.status(error.status);
+      response.send(error);
+    });
 });
 
 module.exports = router;
