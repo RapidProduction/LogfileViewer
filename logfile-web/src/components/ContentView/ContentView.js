@@ -7,17 +7,27 @@ import './ContentView.scss';
 const ContentView = ({ contents }) => (
   <div className="content-view__container">
     {
-      map(contents, (content, index) => (
-        <div
-          className="content-view__content"
-          key={`content.view.${index}`}>
-          <div
-            className="content-view__line-number">
-            {content.id+1}
-          </div>
-          <div>{content.content}</div>
-        </div>
-      ))
+      contents.length > 0 ?
+      <table className="content-view__content">
+        <tbody>
+        {
+          map(contents, (content, index) => (
+            <tr
+              className="content__cell"
+              key={`content.view.${index}`}>
+              <td
+                className="content-view__content__cell__line-number">
+                {content.id+1}
+              </td>
+              <td className="content-view__content__cell__content">
+                {content.content}
+              </td>
+            </tr>
+          ))
+        }
+        </tbody>
+      </table> :
+      <div> Loading... </div>
     }
   </div>
 );

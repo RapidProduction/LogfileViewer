@@ -7,6 +7,8 @@ import React from 'react';
 import ContentView from '../ContentView';
 import Searchbar from '../Searchbar';
 
+import './LogfileView.scss';
+
 const LogfileView = ({
   // props
   logfileContents,
@@ -14,10 +16,10 @@ const LogfileView = ({
   onSearchClick, onBackToBeginning,
   onBack, onNext, onNextToEnd,
 }) => (
-  <div className="container">
+  <div className="logfile-view__container">
     <Searchbar handleSubmit={onSearchClick} />
     <ContentView contents={logfileContents}/>
-    <div className="control_container">
+    <div className="logfile-view__container__control">
       <button onClick={onBackToBeginning}>{"|<"}</button>
       <button onClick={onBack}>{"<"}</button>
       <button onClick={onNext}>{">"}</button>
