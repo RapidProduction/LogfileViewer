@@ -18,12 +18,12 @@ describe('Logfile Connector', () => {
         fixtureFilename = filename;
         fixtureContent = content;
       })
-      .then(() => { done(); });
+      .then(done);
   });
 
   after((done) => {
     removeAllFileInDirectory()
-      .then(() => { done(); });
+      .then(done);
   });
 
   describe('Find', () => {
@@ -31,7 +31,7 @@ describe('Logfile Connector', () => {
       it('should return error reason', () => {
         find('/incorrect-path-name')
           .catch((error) => {
-            expect(error).to.equal('filename should start with correct initial path');
+            expect(error).to.not.equal(null);
           });
       });
     });
@@ -64,8 +64,8 @@ describe('Logfile Connector', () => {
     describe('When specific file exists', () => {
       it('should return file information', () => {
         find(fixtureFilename)
-        .then((fileInformation) => {
-          expect(fileInformation).to.not.equal(null);
+          .then((fileInformation) => {
+            expect(fileInformation).to.not.equal(null);
         });
       });
     });

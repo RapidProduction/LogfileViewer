@@ -1,16 +1,16 @@
 const fs = require('fs');
+const { isNil } = require('lodash');
+const path = require('path');
+
 const {
   countLine,
   readline,
+  toFullpath,
 } = require('../libraries/file-manipulator');
 
-const initialPath = '/Users/max/Desktop/temp';
 const guardFilename = (filename) => {
-  if(filename === undefined || filename === null) {
+  if(isNil(filename)) {
     throw 'filename should not be undefined or null';
-  }
-  else if(!filename.startsWith(initialPath)) {
-    throw 'filename should start with correct initial path';
   }
 }
 
@@ -18,8 +18,8 @@ const find = (filename) => {
   return new Promise((resolve, reject) => {
     try {
       guardFilename(filename);
-      fs.stat(filename, (error, stats) => {
-        if(error) throw error;
+      fs.stat(toFullpath(filename), (error, stats) => {
+        if(error) reject(error);
         countLine(filename)
           .then((line) => {
             resolve(Object.assign({}, stats, { line }))
@@ -28,7 +28,6 @@ const find = (filename) => {
       });
     }
     catch(error) {
-      console.log("crashs at " + error);
       reject(error);
     }
   });

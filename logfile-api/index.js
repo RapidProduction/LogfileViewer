@@ -10,3 +10,5 @@ app.use('/api/logfile', logfileRouter);
 app.listen(PORT, () => {
   console.log(`Logfile API is successfully running on port ${PORT}...`);
 });
+
+module.exports = app;

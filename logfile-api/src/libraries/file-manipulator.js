@@ -3,13 +3,22 @@ const fs = require('fs');
 const path = require('path');
 const { reduce } = require('lodash');
 
-// TODO: Reuse this fixed path
-// This is important it would delete your important file
-const initialPath = '/Users/max/Desktop/temp';
+const { logfilePath, testPath } = require('../config/app-config');
+
+// Warning: it might delete your important files
+let initialPath = logfilePath;
+if(process.env.NODE_ENV === 'test') {
+  initialPath = testPath;
+}
+
+// Every methods should process on top of the initial path
+const toFullpath = (filename) => path.join(initialPath, filename);
+
 const countLine = (filename) => {
   return new Promise((resolve, reject) => {
     let count = 0;
-    fs.createReadStream(filename)
+    const fullpath = toFullpath(filename);
+    fs.createReadStream(fullpath)
       .on('data', (bytes) => {
         for(let i=0; i<bytes.length; ++i) {
           if(bytes[i] == 10) {
@@ -26,14 +35,40 @@ const countLine = (filename) => {
   });
 };
 
+const createDirectory = () => {
+  return new Promise((resolve) => {
+    fs.stat(initialPath, (error) => {
+      if(error) {
+        fs.mkdir(initialPath, () => {
+          resolve();
+        });
+      }
+      else {
+        resolve();
+      }
+    });
+  })
+};
+
 const createFileRandomly = (numberOfLine) => {
-  const filename = path.join(initialPath, faker.system.fileName());
+  const filename = faker.system.fileName();
+  const fullpath = toFullpath(filename);
   const content = faker.lorem.lines(numberOfLine);
   return new Promise((resolve, reject) => {
-    fs.writeFile(filename, content, 'utf-8', () => resolve({ filename, content }));
+    createDirectory()
+      .then(() => {
+        fs.writeFile(fullpath, content, 'utf-8', (error) => {
+          if(error) reject(error);
+          resolve({
+            filename: fullpath.replace(initialPath, ''),
+            content
+          });
+        });
+      });
   });
 };
 
+// This is force to remove file from initial path
 const removeAllFileInDirectory = () => {
   return new Promise((resolve) => {
     fs.readdir(initialPath, (error, files) => {
@@ -55,7 +90,8 @@ const readline = (filename, index, offset) => {
     let buffer = '';
     let count = 0;
     let contents = [];
-    fs.createReadStream(filename)
+    const fullpath = toFullpath(filename);
+    fs.createReadStream(fullpath)
       .on('data', (bytes) => {
         for(let i=0; i<bytes.length; ++i) {
           if(count >= index && count < index + offset) {
@@ -85,4 +121,5 @@ module.exports = {
   createFileRandomly,
   removeAllFileInDirectory,
   readline,
+  toFullpath,
 };
