@@ -1,6 +1,6 @@
 import { isNil } from 'lodash';
 
-const endpoint = 'http://localhost:9001/api/logfile/';
+const endpoint = 'http://localhost:6001/api/logfile/';
 export const formGetFileRequest = (filename, index, offset) => {
   if(isNil(index) || isNil(offset)) {
     return `${endpoint}${filename}`;

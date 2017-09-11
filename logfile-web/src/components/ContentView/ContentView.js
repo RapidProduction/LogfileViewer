@@ -2,12 +2,19 @@ import { map } from 'lodash';
 import { array } from 'prop-types';
 import React from 'react';
 
+import './ContentView.scss';
+
 const ContentView = ({ contents }) => (
-  <div>
+  <div className="content-view__container">
     {
       map(contents, (content, index) => (
-        <div key={`content.view.${index}`}>
-          <div>{content.id+1}</div>
+        <div
+          className="content-view__content"
+          key={`content.view.${index}`}>
+          <div
+            className="content-view__line-number">
+            {content.id+1}
+          </div>
           <div>{content.content}</div>
         </div>
       ))
