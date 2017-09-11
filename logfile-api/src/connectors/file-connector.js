@@ -20,7 +20,7 @@ const find = (filename) => {
     try {
       guardFilename(filename);
       fs.stat(filename, (error, stats) => {
-        if(error) throw error;
+        if(error) reject(error);
         countLine(filename)
           .then((line) => {
             resolve(Object.assign({}, stats, { line }))
