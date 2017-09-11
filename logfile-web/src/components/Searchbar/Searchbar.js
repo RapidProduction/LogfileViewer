@@ -1,5 +1,8 @@
+import classnames from 'classnames';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+
+import InputText from '../InputText/InputText';
 import './Searchbar.scss';
 
 const Searchbar = ({
@@ -12,7 +15,7 @@ const Searchbar = ({
     <div>
       <Field
         name="filename"
-        component="input"
+        component={InputText}
         type="text"
         placeholder="Path to file"
       />

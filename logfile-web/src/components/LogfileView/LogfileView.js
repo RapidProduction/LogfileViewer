@@ -20,10 +20,26 @@ const LogfileView = ({
     <Searchbar handleSubmit={onSearchClick} />
     <ContentView contents={logfileContents}/>
     <div className="logfile-view__container__control">
-      <button onClick={onBackToBeginning}>{"|<"}</button>
-      <button onClick={onBack}>{"<"}</button>
-      <button onClick={onNext}>{">"}</button>
-      <button onClick={onNextToEnd}>{">|"}</button>
+      <button
+        disabled={logfileContents.length <= 0}
+        onClick={onBackToBeginning}>
+        {"|<"}
+      </button>
+      <button
+        disabled={logfileContents.length <= 0}
+        onClick={onBack}>
+        {"<"}
+      </button>
+      <button
+        disabled={logfileContents.length <= 0}
+        onClick={onNext}>
+        {">"}
+      </button>
+      <button
+        disabled={logfileContents.length <= 0}
+        onClick={onNextToEnd}>
+        {">|"}
+      </button>
     </div>
   </div>
 );
