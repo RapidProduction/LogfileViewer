@@ -3,7 +3,7 @@ const logfileRouter = require('./src/routers/logfile-router');
 const cors = require('cors');
 
 const app = express();
-const PORT = 9001;
+const PORT = 6001;
 
 app.use(cors());
 app.use('/api/logfile', logfileRouter);

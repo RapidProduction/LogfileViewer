@@ -1,0 +1,14 @@
+.input-text {
+  &__container {
+    &__input {
+      margin-left: 24px;
+      padding: 8px;
+      border: 0px;
+      border-radius: 6px;
+      font-size: x-large;
+      background: lightblue;
+      color: #404347;
+      outline: none;
+    }
+  }
+}

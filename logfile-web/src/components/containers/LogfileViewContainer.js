@@ -11,7 +11,6 @@ import {
 import LogfileView from '../LogfileView';
 import { fetchLogfile } from '../../modules/logfile-module';
 
-const FILENAME = "test.small";
 const LINE_PER_PAGE = 10;
 const mapStateToProps = (state) => ({
   logfileContents: state.logfile.contents,

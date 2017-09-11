@@ -1,0 +1,28 @@
+.logfile-view {
+  &__container {
+    width: 1080px;
+    margin: 20px;
+    padding: 10px;
+    border: 12px lightblue solid;
+    border-radius: 6px;
+
+    &__control {
+      display: flex;
+      justify-content: flex-end;
+
+      button {
+        width: 30px;
+        height: 30px;
+        margin: 1px;
+        border-radius: 6px;
+        font-size: small;
+        background: lightcoral;
+        border: 0px;
+
+        &:disabled {
+          background: lightgray;
+        }
+      }
+    }
+  }
+}
