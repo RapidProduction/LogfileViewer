@@ -31,9 +31,9 @@ const guardFilename = (filename) => {
   if(isNil(filename)) {
     throw 'filename should not be undefined or null';
   }
-}
+};
 
-const getfileInformation = (filename) => {
+const getFileInformation = (filename) => {
   return new Promise((resolve, reject) => {
     try {
       guardFilename(filename);
@@ -125,14 +125,17 @@ const readline = (filename, index, offset) => {
 
     try {
       guardFilename(filename);
+
       let buffer = '';
       let count = 0;
       let contents = [];
       // Looking for cache
-      // let startIndex = FileCacher.instance.getPosition(index);
-      // startIndex = isNil(startIndex) ? index : startIndex;
-      let startIndex = index;
-      fs.createReadStream(toFullpath(filename))
+      let instance = FileCacher.instance;
+      let startIndex = FileCacher.instance.getPosition(filename, index);
+      startIndex = isNil(startIndex) ? index : startIndex;
+      count = isNil(startIndex) ? count : startIndex;
+
+      fs.createReadStream(toFullpath(filename), { start: startIndex })
         .on('data', (bytes) => {
           for(let i=0; i<bytes.length; ++i) {
             if(count >= startIndex + offset) {
@@ -167,7 +170,7 @@ const readline = (filename, index, offset) => {
 module.exports = {
   countLine,
   createFileRandomly,
-  getfileInformation,
+  getFileInformation,
   isExist,
   removeAllFileInDirectory,
   readline,

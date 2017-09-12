@@ -4,13 +4,13 @@ const path = require('path');
 
 const {
   isExist,
-  getfileInformation,
+  getFileInformation,
   readline,
 } = require('../libraries/file-manipulator');
 
 const exist = (filename) => isExist(filename);
 
-const find = (filename) => getfileInformation(filename);
+const find = (filename) => getFileInformation(filename);
 
 const read = (filename, index, numberOfLine) => {
   return new Promise((resolve, reject) => {

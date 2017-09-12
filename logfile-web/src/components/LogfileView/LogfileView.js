@@ -30,7 +30,8 @@ const LogfileView = ({
       !isLoading && isNil(error) && isNil(logfileContents) ?
       <LandingView
         title={"Welcome to logfile view application"}
-        description={"Please fill in the filename and click view to see logfile content"} /> :
+        description={"Please fill in the filename where it in \
+          the directory /var/tmp/ then click view to see logfile content"} /> :
         isLoading ?
         <LoadingView
           title={"Loading..."}
@@ -39,7 +40,7 @@ const LogfileView = ({
           <ContentView contents={logfileContents}/> :
           <ErrorView
             title={"There is some error occur"}
-            description={"Please click here to try to reload again"}
+            description={"Please click here to try to reload again or check your filename thoroughly"}
             clickHandler={onSearchClick} />
     }
     <div className="logfile-view__container__control">
