@@ -30,7 +30,6 @@ class FileCacher {
     this.getLineCache(filename)
       .then((cache) => {
         fileCache[filename] = cache;
-        console.log(fileCache[filename].length);
       })
       .catch((error) => console.log(error.message));
   }
@@ -38,7 +37,7 @@ class FileCacher {
   getPosition(filename, lineNumber) {
     if(fileCache.hasOwnProperty(filename)) {
       const byte = get(fileCache[filename], `[${lineNumber}].byte`, null);
-      console.log(`Using cache of ${filename} on index ${lineNumber} at byte ${byte} `)
+      // console.log(`Using cache of ${filename} on index ${lineNumber} at byte ${byte} `)
       return byte;
     }
     else {
@@ -60,7 +59,6 @@ class FileCacher {
       });
 
       const fullpath = toFullpath(filename);
-      console.log(fullpath);
       fs.createReadStream(fullpath)
         .on('data', (bytes) => {
           for(let i=0; i<bytes.length; ++i) {
