@@ -42,7 +42,7 @@ class FileCacher {
       return byte;
     }
     else {
-      // trigger to build cache when file change
+      // TODO: Add logic here to rebuild cache when file getting dirty
       this.buildCache(filename);
       return null;
     }

@@ -31,7 +31,9 @@ const LogfileView = ({
       <LandingView
         title={"Welcome to logfile view application"}
         description={"Please fill in the filename where it in \
-          the directory /var/tmp/ then click view to see logfile content"} /> :
+          the directory /var/tmp/ then click view to see logfile content. \
+          Logfile system support in-memory cachcing where it cache data in memory \
+          so you can access logfile more faster."} /> :
         isLoading ?
         <LoadingView
           title={"Loading..."}
