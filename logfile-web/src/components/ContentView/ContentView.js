@@ -7,7 +7,6 @@ import './ContentView.scss';
 const ContentView = ({ contents }) => (
   <div className="content-view__container">
     {
-      contents.length > 0 ?
       <table className="content-view__content">
         <tbody>
         {
@@ -26,14 +25,13 @@ const ContentView = ({ contents }) => (
           ))
         }
         </tbody>
-      </table> :
-      <div> Loading... </div>
+      </table>
     }
   </div>
 );
 
 ContentView.propTypes = {
-  contents: array.isRequired,
+  contents: array,
 };
 
 ContentView.defaultProps = {

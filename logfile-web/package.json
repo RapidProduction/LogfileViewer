@@ -40,6 +40,7 @@
     "react-redux": "^5.0.6",
     "recompose": "^0.25.0",
     "redux": "^3.7.2",
+    "redux-devtools-extension": "^2.13.2",
     "redux-form": "^7.0.4",
     "redux-observable": "^0.16.0",
     "rxjs": "^5.4.3",
@@ -53,6 +54,7 @@
   },
   "devDependencies": {
     "node-sass": "^4.5.3",
+    "redux-devtools": "^3.4.0",
     "sass-loader": "^6.0.6"
   },
   "scripts": {

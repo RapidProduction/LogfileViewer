@@ -1,0 +1,33 @@
+.error-view {
+  &__container {
+    width: 980;
+    height: 400px;
+    padding: 20px;
+    margin: 8px;
+    border: 1px grey solid;
+    border-spacing: 0px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: grey;
+    cursor:pointer;
+  }
+
+  &__content {
+    &__title {
+      font-size: xx-large;
+      font-weight: lighter;
+      color: #e8eaed;
+    }
+
+    &__description {
+      margin-top: 5px;
+      font-size: small;
+      font-weight: lighter;
+      color: #e8eaed;
+    }
+  }
+
+}

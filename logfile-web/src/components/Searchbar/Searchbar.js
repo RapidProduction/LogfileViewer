@@ -1,4 +1,3 @@
-import classnames from 'classnames';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
@@ -17,7 +16,7 @@ const Searchbar = ({
         name="filename"
         component={InputText}
         type="text"
-        placeholder="Path to file"
+        placeholder="Path to logfile"
       />
     </div>
     <button

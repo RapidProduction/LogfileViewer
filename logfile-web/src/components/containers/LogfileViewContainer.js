@@ -5,6 +5,7 @@ import {
 import { connect } from 'react-redux';
 import {
   compose,
+  mapProps,
   withHandlers,
 } from 'recompose';
 
@@ -14,7 +15,9 @@ import { fetchLogfile } from '../../modules/logfile-module';
 const LINE_PER_PAGE = 10;
 const mapStateToProps = (state) => ({
   logfileContents: state.logfile.contents,
+  logfileError: state.logfile.error,
   logfileIndex: get(state.logfile, 'contents.0.id', 0),
+  logfileLoading: state.logfile.loading,
   logfileLine: state.logfile.line,
   logfileFilename: state.logfile.filename,
   searchFilename: get(state.form, 'search.values.filename', null),
@@ -27,6 +30,11 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
+  mapProps((props) => ({
+    ...props,
+    error: props.logfileError,
+    isLoading: props.logfileLoading,
+  })),
   withHandlers({
     onSearchClick: ({ fetchLogfile, searchFilename }) => () => {
       if(!isNil(searchFilename)) {

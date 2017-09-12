@@ -6,6 +6,7 @@ import {
   applyMiddleware,
   createStore,
 } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import { createEpicMiddleware } from 'redux-observable';
 
 import App from './App';
@@ -17,9 +18,12 @@ import {
 import registerServiceWorker from './registerServiceWorker';
 
 const epicMiddleware = createEpicMiddleware(rootEpic);
+const enhancer = composeWithDevTools(
+  applyMiddleware(epicMiddleware),
+);
 const store = createStore(
   rootReducer,
-  applyMiddleware(epicMiddleware)
+  enhancer,
 );
 
 ReactDOM.render(
