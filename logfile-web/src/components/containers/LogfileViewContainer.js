@@ -21,7 +21,6 @@ const mapStateToProps = (state) => ({
   logfileLine: state.logfile.line,
   logfileFilename: state.logfile.filename,
   searchFilename: get(state.form, 'search.values.filename', null),
-  search: state.form.search,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -32,11 +31,12 @@ const mapDispatchToProps = (dispatch) => ({
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   mapProps((props) => ({
+    ...props,
     error: props.logfileError,
     isLoading: props.logfileLoading,
   })),
   withHandlers({
-    onSearchClick: ({ fetchLogfile, searchFilename, search }) => () => {
+    onSearchClick: ({ fetchLogfile, searchFilename }) => () => {
       if(!isNil(searchFilename)) {
         fetchLogfile(searchFilename, 0);
       }

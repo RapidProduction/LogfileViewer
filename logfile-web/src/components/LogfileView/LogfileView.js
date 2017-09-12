@@ -10,7 +10,9 @@ import {
 import React from 'react';
 
 import ContentView from '../ContentView';
-import ErrorView from '../ErrorView/ErrorView';
+import ErrorView from '../ErrorView/';
+import LandingView from '../LandingView';
+import LoadingView from '../LoadingView';
 import Searchbar from '../Searchbar';
 
 import './LogfileView.scss';
@@ -25,16 +27,14 @@ const LogfileView = ({
   <div className="logfile-view__container">
     <Searchbar handleSubmit={onSearchClick} />
     {
-      !isLoading && isNil(error) ?
-      <ErrorView
+      !isLoading && isNil(error) && isNil(logfileContents) ?
+      <LandingView
         title={"Welcome to logfile view application"}
-        description={"Please fill in the filename and click view to see logfile content"}
-        clickHandler={onSearchClick} /> :
+        description={"Please fill in the filename and click view to see logfile content"} /> :
         isLoading ?
-        <ErrorView
+        <LoadingView
           title={"Loading..."}
-          description={"Loading file content, please wait a second"}
-          clickHandler={onSearchClick} /> :
+          description={"Loading file content, please wait a second"} /> :
         isNil(error) ?
           <ContentView contents={logfileContents}/> :
           <ErrorView

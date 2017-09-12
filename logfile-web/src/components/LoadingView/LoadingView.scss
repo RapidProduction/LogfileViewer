@@ -1,0 +1,37 @@
+.loading-view {
+  &__container {
+    width: 980;
+    height: 400px;
+    padding: 20px;
+    margin: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    cursor:pointer;
+  }
+
+  &__content {
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: grey;
+
+    &__title {
+      font-size: xx-large;
+      font-weight: lighter;
+      color: rgb(224, 216, 216);
+    }
+
+    &__description {
+      font-size: small;
+      font-weight: lighter;
+      color: rgb(224, 216, 216);
+    }
+  }
+
+}

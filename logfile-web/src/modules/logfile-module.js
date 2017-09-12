@@ -11,7 +11,7 @@ export const LOGFILE_FETCH = 'logfile/logfile/fetch';
 // Reducers
 const defaultState = {
   error: null,
-  contents: [],
+  contents: null,
   filename: undefined,
   line: 0,
   loading: false,

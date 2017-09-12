@@ -1,35 +1,26 @@
 import React from 'react';
-import {
-  func,
-  string,
-} from 'prop-types';
+import { string } from 'prop-types';
 
-import './ErrorView.scss';
+import './LandingView.scss';
 
 const LandingView = ({
   // props
   title, description,
-  // events
-  clickHandler,
 }) => (
-  <div
-    className="error-view__container"
-    onClick={clickHandler}>
-    <div className="error-view__content__title">{title}</div>
-    <div className="error-view__content__description">{description}</div>
+  <div className="landing-view__container">
+    <div className="landing-view__content__title">{title}</div>
+    <div className="landing-view__content__description">{description}</div>
   </div>
 );
 
 LandingView.propTypes = {
   title: string,
   description: string,
-  clickHandler: func,
 };
 
 LandingView.defaultProps = {
-  title: string,
-  description: string,
-  clickHandler: func,
+  title: "Welcome to logfile view application",
+  description: "Please fill in the filename and click view to see logfile content",
 };
 
 export default LandingView;

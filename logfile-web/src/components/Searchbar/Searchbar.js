@@ -16,7 +16,7 @@ const Searchbar = ({
         name="filename"
         component={InputText}
         type="text"
-        placeholder="Path to file"
+        placeholder="Path to logfile"
       />
     </div>
     <button
