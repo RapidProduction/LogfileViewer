@@ -12,16 +12,14 @@ const FileModel = require('../models/file-model');
 const JSONAPISerializer = require('jsonapi-serializer').Serializer;
 
 class LogFileController extends BaseController {
-  constructor() {
-    super();
-  }
+  constructor() { super(); }
 
   static get whitelistParams() {
     return ['index', 'offset'];
   }
 
   static get() {
-    // Search file model by query
+    // TODO: Search file model by query
   }
 
   static get(id, params) {
@@ -33,26 +31,32 @@ class LogFileController extends BaseController {
           if(isNil(index) || isNil(offset)) throw 'Index and offset cannot be null';
           return Promise.all([
               fileModel.attributes,
-              fileModel.read(parseInt(index), parseInt(offset))
+              fileModel.read(parseInt(index), parseInt(offset)),
             ]);
         })
-        .then(dataset => {
-          if(isArray(dataset)){
-            const [ file , contents ] = dataset;
-            const result = Object.assign({}, file, { content:
-              map(contents, (value, contentIndex) => ({
-                id: contentIndex + parseInt(index),
-                content: value,
-              })),
-            });
-            resolve(FileSerializer.serialize(result));
-          }
-          resolve(FileSerializer.serialize(dataset));
-        })
-        .catch((error) => {
-          reject(toUnprocessableEntityError(null, error));
-        });
+        .then((dataset) => this.serialize(dataset, index))
+        .then(resolve)
+        .catch((error) => reject(this.serializeError(error)));
     });
+  }
+
+  static serialize(dataset, index) {
+    let resultDataset = dataset;
+    if(isArray(dataset)) {
+      const [ file , contents ] = dataset;
+      resultDataset = Object.assign({}, file, { content:
+        map(contents, (value, contentIndex) => ({
+          id: contentIndex + parseInt(index),
+          content: value,
+        })),
+      });
+    }
+
+    return FileSerializer.serialize(resultDataset);
+  }
+
+  static serializeError(error) {
+    return toUnprocessableEntityError(null, error.message);
   }
 }
 

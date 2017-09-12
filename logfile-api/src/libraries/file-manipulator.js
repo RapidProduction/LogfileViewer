@@ -1,18 +1,54 @@
 const faker = require('faker');
 const fs = require('fs');
 const path = require('path');
-const { reduce } = require('lodash');
+const {
+  isNil,
+  reduce,
+} = require('lodash');
 
-const { logfilePath, testPath } = require('../config/app-config');
-
-// Warning: it might delete your important files
-let initialPath = logfilePath;
-if(process.env.NODE_ENV === 'test') {
-  initialPath = testPath;
-}
+const FileCacher = require('./file-cacher');
+const { logfilePath } = require('../config/app-config');
 
 // Every methods should process on top of the initial path
-const toFullpath = (filename) => path.join(initialPath, filename);
+const toFullpath = (filename) => path.join(logfilePath, filename);
+
+const isExist = (filename) => {
+  return new Promise((resolve, reject) => {
+    try {
+      guardFilename(filename);
+      fs.stat(toFullpath(filename), (error, stats) => {
+        if(error) resolve(error);
+        resolve(true);
+      });
+    }
+    catch(error) {
+      reject(error);
+    }
+  });
+};
+
+const guardFilename = (filename) => {
+  if(isNil(filename)) {
+    throw 'filename should not be undefined or null';
+  }
+}
+
+const getfileInformation = (filename) => {
+  return new Promise((resolve, reject) => {
+    try {
+      guardFilename(filename);
+      fs.stat(toFullpath(filename), (error, stats) => {
+        if(error) reject(error);
+        countLine(filename)
+          .then((line) => resolve(Object.assign({}, stats, { line })))
+          .catch(reject);
+      });
+    }
+    catch(error) {
+      reject(error);
+    }
+  });
+};
 
 const countLine = (filename) => {
   return new Promise((resolve, reject) => {
@@ -37,9 +73,9 @@ const countLine = (filename) => {
 
 const createDirectory = () => {
   return new Promise((resolve) => {
-    fs.stat(initialPath, (error) => {
+    fs.stat(logfilePath, (error) => {
       if(error) {
-        fs.mkdir(initialPath, () => {
+        fs.mkdir(logfilePath, () => {
           resolve();
         });
       }
@@ -60,7 +96,7 @@ const createFileRandomly = (numberOfLine) => {
         fs.writeFile(fullpath, content, 'utf-8', (error) => {
           if(error) reject(error);
           resolve({
-            filename: fullpath.replace(initialPath, ''),
+            filename: fullpath.replace(logfilePath, ''),
             content
           });
         });
@@ -71,10 +107,10 @@ const createFileRandomly = (numberOfLine) => {
 // This is force to remove file from initial path
 const removeAllFileInDirectory = () => {
   return new Promise((resolve) => {
-    fs.readdir(initialPath, (error, files) => {
+    fs.readdir(logfilePath, (error, files) => {
       if(error) throw error;
       for(const file of files) {
-        fs.unlink(path.join(initialPath, file), err => {
+        fs.unlink(path.join(logfilePath, file), err => {
           if (error) throw error;
         });
       }
@@ -87,38 +123,52 @@ const readline = (filename, index, offset) => {
   return new Promise((resolve, reject) => {
     if(index < 0) reject('index cannot be less than 0');
 
-    let buffer = '';
-    let count = 0;
-    let contents = [];
-    const fullpath = toFullpath(filename);
-    fs.createReadStream(fullpath)
-      .on('data', (bytes) => {
-        for(let i=0; i<bytes.length; ++i) {
-          if(count >= index && count < index + offset) {
-            if(bytes[i] == 10) {
-              contents.push(buffer);
-              buffer = '';
+    try {
+      guardFilename(filename);
+      let buffer = '';
+      let count = 0;
+      let contents = [];
+      // Looking for cache
+      // let startIndex = FileCacher.instance.getPosition(index);
+      // startIndex = isNil(startIndex) ? index : startIndex;
+      let startIndex = index;
+      fs.createReadStream(toFullpath(filename))
+        .on('data', (bytes) => {
+          for(let i=0; i<bytes.length; ++i) {
+            if(count >= startIndex + offset) {
+              break;
             }
-            else {
-              buffer += String.fromCharCode(bytes[i]);
+            else if(count >= startIndex && count < startIndex + offset) {
+              if(bytes[i] == 10) {
+                contents.push(buffer);
+                buffer = '';
+              }
+              else {
+                buffer += String.fromCharCode(bytes[i]);
+              }
             }
+            if(bytes[i] == 10) count++;
           }
-          if(bytes[i] == 10) count++;
-        }
-      })
-      .on('end', () => {
-        if(buffer !== '') contents.push(buffer);
-        resolve(contents);
-      })
-      .on('error', (error) => {
-        reject(error);
-      });
+        })
+        .on('end', () => {
+          if(buffer !== '') contents.push(buffer);
+          resolve(contents);
+        })
+        .on('error', (error) => {
+          reject(error);
+        });
+    }
+    catch(error) {
+      reject(error);
+    }
   });
 };
 
 module.exports = {
   countLine,
   createFileRandomly,
+  getfileInformation,
+  isExist,
   removeAllFileInDirectory,
   readline,
   toFullpath,
